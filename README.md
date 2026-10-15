@@ -52,7 +52,32 @@ Thumbs up uses Zoom’s own raise/lower-hand control when available, or its docu
 
 Raise your hand into the outlined area, hold until the progress bar completes, then lower your hand below the area before the next action. Natural thumb positions are accepted for an open palm.
 
-**Paused** keeps the preview live without sending commands. **Practice** tests gestures without changing Zoom. **Live** enables the mapped actions. Editing a mapping pauses live actions while leaving the preview on. Control–Option–Command–G pauses gestures immediately if the shortcut can be registered.
+## Paused, Practice and Live
+
+Choose a mode at the top of Vela. The local camera preview stays on in all three modes while the camera is running.
+
+| Mode | What happens | When to use it |
+| --- | --- | --- |
+| **Paused** | Vela sends no gesture commands to Zoom. The camera preview remains visible. This does **not** turn off your Zoom video or mute your microphone. | Keep Vela open while taking a break from gesture control. Vela starts in this mode. |
+| **Practice** | Gesture recognition, hold timing and release-to-reset work, but Vela sends no commands to Zoom. Completing a gesture shows a `Practice: gesture → action` result. | Check lighting, hand position and hold duration before going live. You can practise without a Zoom meeting. |
+| **Live** | Holding an enabled gesture until the progress bar fills sends its mapped action to Zoom. Lower your hand below the outlined area before the next action. | Control an open Zoom meeting after checking the mappings in Practice. Camera and Accessibility permissions are required. |
+
+Use **Pause** at the bottom of the app, or **Control–Option–Command–G** if the shortcut is available, to return to Paused. Pausing Vela leaves Zoom’s current video, microphone and recording states as they are. Quit Vela to release its camera.
+
+Editing a mapping temporarily suspends live commands while the preview stays on. Saving or cancelling the editor resumes the selected mode. **Test gesture** switches to Practice; choose Live yourself when ready to control Zoom again.
+
+## More of the interface
+
+These interface captures deliberately have the camera off, so no person or room appears. Normally the preview stays live in Paused, Practice and Live; the camera was disabled separately for these screenshots. Click a thumbnail to inspect it at full size. Zoom status fields can show “unavailable” when no meeting or readable control is available.
+
+| Settings | Mapping editor | Practice mode |
+| --- | --- | --- |
+| [![Vela Settings with permission status, Zoom status, window and shortcut options](docs/assets/vela-settings-ui.jpg)](docs/assets/vela-settings-ui.jpg) | [![Vela mapping editor showing the gesture, Zoom action, hold duration, enabled switch and Test gesture button](docs/assets/vela-mapping-editor-ui.jpg)](docs/assets/vela-mapping-editor-ui.jpg) | [![Vela in Practice mode with the no-Zoom-commands feedback](docs/assets/vela-practice-ui.jpg)](docs/assets/vela-practice-ui.jpg) |
+
+**Settings** shows Accessibility permission, links to macOS Camera and Accessibility settings, and the Zoom states Vela can read. You can keep Vela above other windows, optionally allow unverified video/microphone toggle shortcuts, or restore the default mappings after confirmation. Unverified toggle shortcuts are off by default.
+
+**The mapping editor** lets you choose a recognised gesture and Zoom action, adjust its hold duration from 0.5 to 3 seconds, enable or disable the mapping, and test it in Practice. Save commits the change; Cancel discards the edit. Use a mapping’s three-dot menu to delete it; Undo deletion is available afterwards.
+
 
 ## What the experiment taught me
 
