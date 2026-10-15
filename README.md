@@ -8,7 +8,7 @@ There was no particular business problem behind it. I wanted to explore what App
 
 The result is **Vela**, a native macOS experiment built with Codex. It combines an always-visible camera preview, editable gesture mappings and a simple Paused / Practice / Live mode selector.
 
-![Vela v0.4.0 with four distinct gesture mappings; camera off for this screenshot](docs/assets/vela-v0.4.0.jpg)
+![Edited Vela screenshot showing the original live camera preview and four distinct gesture mappings](docs/assets/vela-v0.4.0-live.png)
 
 [Download the experimental macOS preview](https://github.com/swihpi/vela-gesture-demo/releases/tag/v0.4.0) · [Installation instructions](docs/INSTALL.md) · [Project page](https://swihpi.github.io/vela-gesture-demo/)
 
