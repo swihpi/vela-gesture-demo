@@ -112,9 +112,9 @@ check(!GestureRegion.contains(wrist:HandPoint(0.5,0.1)),"Resting hands below the
 check(GestureRegion.contains(wrist:HandPoint(0.5,0.4)),"Raised hand falls inside the active area")
 print("Release GestureChecks: \(count) checks passed")
 
-check(GestureMapping.defaults.first(where:{$0.gesture == .openPalm})?.action == .toggleVideo,"New palm default toggles video both ways")
+check(GestureMapping.defaults.first(where:{$0.gesture == .openPalm})?.action == .toggleMicrophone,"Palm toggles microphone")
 check(GestureMapping.defaults.first(where:{$0.gesture == .fist})?.action == .toggleRecording,"New fist default toggles recording")
-check(GestureMapping.defaults.first(where:{$0.gesture == .thumbsUp})?.action == .toggleMicrophone,"New thumbs-up default toggles microphone")
+check(GestureMapping.defaults.first(where:{$0.gesture == .thumbsUp})?.action == .toggleHand,"Thumbs up raises or lowers hand")
 check(ZoomAction.toggleRecording.target(from:false),"Recording toggle starts from stopped")
 check(!ZoomAction.toggleRecording.target(from:true),"Recording toggle stops from active")
 let migrationSuite="com.swi.vela.migration.\(UUID().uuidString)"
@@ -125,7 +125,42 @@ var oldPalm=migrationStore.mappings.first(where:{$0.gesture == .openPalm})!;oldP
 _=migrationStore.save(oldPalm)
 migrationStore.applyTogglePreset()
 check(migrationStore.mappings.map(\.id)==originalIDs,"Preset migration preserves mapping identifiers")
-check(migrationStore.mappings.first(where:{$0.gesture == .openPalm})?.action == .toggleVideo,"Preset migration updates the existing palm mapping")
+check(migrationStore.mappings.first(where:{$0.gesture == .openPalm})?.action == .toggleMicrophone,"Preset migration updates the existing palm mapping")
 check(MappingStore(defaults:migrationPrefs).mappings==migrationStore.mappings,"Migrated preset persists")
 migrationPrefs.removePersistentDomain(forName:migrationSuite)
 print("Toggle GestureChecks: \(count) checks passed")
+
+check(Set(GestureMapping.defaults.map(\.action)).count == 4,"Each default gesture has a distinct action")
+check(ZoomAction.toggleHand.target(from:false),"Hand toggle raises a lowered hand")
+check(!ZoomAction.toggleHand.target(from:true),"Hand toggle lowers a raised hand")
+check(ZoomHandControl.state(menuTitle:"Raise Hand") == false,"Raise menu means hand is lowered")
+check(ZoomHandControl.state(menuTitle:" Lower My Hand ") == true,"Lower menu means hand is raised")
+check(ZoomHandControl.state(menuTitle:"Lower All Hands") == nil,"Never use participant moderation controls")
+check(ZoomHandControl.state(menuTitle:"Reactions") == nil,"Never infer hand state from reactions")
+let upgradeSuite="com.swi.vela.upgrade.\(UUID().uuidString)"
+let upgradePrefs=UserDefaults(suiteName:upgradeSuite)!
+let upgrade=MappingStore(defaults:upgradePrefs)
+var palm=upgrade.mappings.first { $0.gesture == .openPalm }!; palm.action = .toggleVideo; palm.hold=2.1; palm.enabled=false
+var thumb=upgrade.mappings.first { $0.gesture == .thumbsUp }!; thumb.action = .toggleMicrophone
+_=upgrade.save(palm); _=upgrade.save(thumb)
+let upgradeIDs=upgrade.mappings.map(\.id)
+upgrade.migrateDistinctTogglePreset()
+check(upgrade.mappings.map(\.id)==upgradeIDs,"Upgrade preserves IDs")
+let upgradedPalm=upgrade.mappings.first { $0.gesture == .openPalm }!
+check(upgradedPalm.action == .toggleMicrophone && upgradedPalm.hold == 2.1 && !upgradedPalm.enabled,"Upgrade corrects old defaults without enabling disabled rows or changing holds")
+check(upgrade.mappings.first { $0.gesture == .thumbsUp }?.action == .toggleHand,"Upgrade corrects old thumbs-up default")
+var custom=upgrade.mappings.first { $0.gesture == .thumbsUp }!; custom.action = .videoOff
+_=upgrade.save(custom); upgrade.migrateDistinctTogglePreset()
+check(upgrade.mappings.contains(custom),"Migration runs once and preserves later edits")
+check(MappingStore(defaults:upgradePrefs).mappings==upgrade.mappings,"Upgrade persists across restarts")
+print("Distinct-action GestureChecks: \(count) checks passed")
+
+upgradePrefs.removeObject(forKey:"distinctTogglePreset.v3")
+let beforeCustomUpgrade=MappingStore(defaults:upgradePrefs)
+let removedFist=beforeCustomUpgrade.mappings.first { $0.gesture == .fist }!
+beforeCustomUpgrade.remove(removedFist)
+beforeCustomUpgrade.migrateDistinctTogglePreset()
+check(beforeCustomUpgrade.mappings.contains(custom),"Migration preserves customised actions")
+check(!beforeCustomUpgrade.mappings.contains { $0.gesture == .fist },"Migration does not recreate deleted mappings")
+upgradePrefs.removePersistentDomain(forName:upgradeSuite)
+print("Migration GestureChecks: \(count) checks passed")

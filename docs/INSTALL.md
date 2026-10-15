@@ -37,7 +37,7 @@ See [Apple's official opening instructions](https://support.apple.com/102445).
 - Start with **Practice**. Raise a hand into the dashed area, hold until the progress bar fills, and lower it below the area before repeating.
 - Choose **Live** when ready to send commands to Zoom. **Paused** leaves the preview running without sending commands.
 
-V sign and open palm toggle video. Thumbs up toggles microphone mute. Closed fist requests start/stop of Zoom computer recording. Recording requires Zoom permission and may show Zoom's own confirmation. Vela does not bypass or accept those prompts for you.
+V sign toggles video. Open palm toggles microphone mute. Thumbs up raises/lowers your Zoom hand. Closed fist requests start/stop of Zoom computer recording. Recording requires Zoom permission and may show Zoom's own confirmation. Vela does not bypass or accept those prompts for you.
 
 The red close button or Command-Q quits Vela and releases its camera. Yellow minimises; green resizes or enters full screen.
 
@@ -50,3 +50,5 @@ To remove it, quit Vela and move Vela.app from Applications to the Trash. You ca
 ## Verify the download
 
 The release includes `SHA256SUMS.txt`. With the DMG and checksum file in the same directory, advanced users can run `shasum -a 256 -c SHA256SUMS.txt`. A checksum checks that a download matches the release; it is not Apple notarisation or an independent security review.
+
+Thumbs up uses Zoom’s raise/lower-hand control or its default Option–Y shortcut. Keep that shortcut configured in Zoom. If Zoom does not expose hand state, Vela reports the shortcut as sent rather than claiming success.

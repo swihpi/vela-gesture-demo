@@ -20,9 +20,7 @@ enum StudioMode: String, CaseIterable, Identifiable {
     @Published var hotkeyAvailable=false
     private var subscriptions=Set<AnyCancellable>()
     init() {
-        if !UserDefaults.standard.bool(forKey:"togglePreset.v2") {
-            store.applyTogglePreset(); UserDefaults.standard.set(true,forKey:"togglePreset.v2")
-        }
+        store.migrateDistinctTogglePreset()
         camera.onGesture={ [weak self] mapping in
             guard let self, self.enabled || self.practice else { return }
             if self.practice { self.lastEvent="Practice: \(mapping.gesture.title) → \(mapping.action.title)" }

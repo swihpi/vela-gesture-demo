@@ -8,9 +8,9 @@ There was no particular business problem behind it. I wanted to explore what App
 
 The result is **Vela**, a native macOS experiment built with Codex. It combines an always-visible camera preview, editable gesture mappings and a simple Paused / Practice / Live mode selector.
 
-![Vela running in Live mode, with its camera preview, hand landmarks and editable Zoom gesture mappings](docs/assets/vela.png)
+![Vela v0.4.0 with four distinct gesture mappings; camera off for this screenshot](docs/assets/vela-v0.4.0.jpg)
 
-[Download the experimental macOS preview](https://github.com/swihpi/vela-gesture-demo/releases/tag/v0.3.1) · [Installation instructions](docs/INSTALL.md) · [Project page](https://swihpi.github.io/vela-gesture-demo/)
+[Download the experimental macOS preview](https://github.com/swihpi/vela-gesture-demo/releases/tag/v0.4.0) · [Installation instructions](docs/INSTALL.md) · [Project page](https://swihpi.github.io/vela-gesture-demo/)
 
 **Apple silicon · macOS 14+ deployment target · Not Developer ID signed or Apple-notarised**
 
@@ -42,11 +42,13 @@ Apple references: [hand-pose detection](https://developer.apple.com/documentatio
 | Gesture | Default action |
 | --- | --- |
 | V sign | Toggle Zoom video on/off |
-| Open palm | Toggle Zoom video on/off |
+| Open palm | Toggle microphone mute/unmute |
 | Closed fist | Request start/stop of Zoom computer recording |
-| Thumbs up | Toggle microphone mute/unmute |
+| Thumbs up | Raise/lower Zoom hand |
 
-Both V sign and open palm toggle video intentionally. Each mapping can be edited, disabled or deleted, and hold durations can be adjusted. Only one enabled mapping per gesture is allowed. Multiple gestures can share an action.
+Each default gesture controls a different function. Each mapping can be edited, disabled or deleted, and hold durations can be adjusted. Only one enabled mapping per gesture is allowed. Upgrading from v0.3.1 corrects the old open-palm and thumbs-up defaults once while preserving row IDs, hold durations, disabled rows and other action choices.
+
+Thumbs up uses Zoom’s own raise/lower-hand control when available, or its documented Option–Y shortcut in an open meeting. When Zoom does not expose the resulting state, Vela reports the shortcut as sent and asks you to check Zoom. Keep Zoom’s default Option–Y shortcut configured. [Zoom hand controls](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0068290).
 
 Raise your hand into the outlined area, hold until the progress bar completes, then lower your hand below the area before the next action. Natural thumb positions are accepted for an open palm.
 
@@ -73,7 +75,8 @@ This is an **experimental reference application**, not a business solution or an
 - The deployment target is macOS 14+, Apple silicon. Development testing was on macOS 26.6.2; other versions and models have not been independently verified.
 - Zoom's English-language menus and controls are supported. A Zoom update can change them.
 - Lighting, hand position and occlusion affect recognition. A built-in camera must be available and the laptop lid open.
-- 57 deterministic gesture/mapping checks passed. The four gesture recognisers were also tried interactively during development, including adjustments for the open palm.
+- 71 deterministic gesture/mapping checks passed. The four gesture recognisers were also tried interactively during development, including adjustments for the open palm.
+- Raise/lower hand was verified in both directions through Vela in a solo Zoom meeting. A new physical thumbs-up gesture acceptance test is still needed.
 - The final recording toggle has not yet been verified end to end in a separate release-acceptance test. Host permissions and Zoom prompts remain relevant.
 - This release is not Developer ID signed or Apple-notarised. Follow the app-specific [installation instructions](docs/INSTALL.md) only if you trust the release. A clean-Mac/quarantined-download installation has not yet been independently tested.
 - Extending Vela to another application requires implementing and testing that application's control path. Arbitrary custom gesture training is not included.

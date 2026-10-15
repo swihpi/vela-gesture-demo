@@ -8,9 +8,10 @@ public enum GestureKind: String, Codable, CaseIterable, Identifiable, Sendable {
     public var instruction: String { switch self { case .victory: "Extend index and middle fingers"; case .openPalm: "Face your palm forward; extend four long fingers"; case .fist: "Close all fingers into a fist"; case .thumbsUp: "Close four fingers and point your thumb up" } }
 }
 public enum ZoomAction: String, Codable, CaseIterable, Identifiable, Sendable {
-    case toggleVideo, videoOff, videoOn, mute, unmute, toggleMicrophone, toggleRecording
+    case toggleVideo, videoOff, videoOn, mute, unmute, toggleMicrophone, toggleRecording, toggleHand
     public var id: String { rawValue }
-    public var title: String { switch self { case .toggleVideo: "Toggle video"; case .videoOff: "Turn video off"; case .videoOn: "Turn video on"; case .mute: "Mute microphone"; case .unmute: "Unmute microphone"; case .toggleMicrophone: "Toggle microphone"; case .toggleRecording: "Start / stop recording" } }
+    public var title: String { switch self { case .toggleVideo: "Toggle video"; case .videoOff: "Turn video off"; case .videoOn: "Turn video on"; case .mute: "Mute microphone"; case .unmute: "Unmute microphone"; case .toggleMicrophone: "Toggle microphone"; case .toggleRecording: "Start / stop recording"; case .toggleHand: "Raise / lower hand" } }
+    public var isHand: Bool { self == .toggleHand }
     public var isRecording: Bool { self == .toggleRecording }
     public var isVideo: Bool { [.toggleVideo,.videoOff,.videoOn].contains(self) }
     /// nil means toggle. Explicit actions must never fall back to a blind toggle.
@@ -24,7 +25,7 @@ public struct GestureMapping: Codable, Identifiable, Equatable, Sendable {
     public var hold: Double
     public var enabled: Bool
     public init(id: UUID = UUID(), gesture: GestureKind, action: ZoomAction, hold: Double = 1, enabled: Bool = true) { self.id=id; self.gesture=gesture; self.action=action; self.hold=hold; self.enabled=enabled }
-    public static var defaults: [GestureMapping] { [.init(gesture:.victory,action:.toggleVideo),.init(gesture:.openPalm,action:.toggleVideo),.init(gesture:.fist,action:.toggleRecording,hold:1.5),.init(gesture:.thumbsUp,action:.toggleMicrophone,hold:1.3)] }
+    public static var defaults: [GestureMapping] { [.init(gesture:.victory,action:.toggleVideo),.init(gesture:.openPalm,action:.toggleMicrophone),.init(gesture:.fist,action:.toggleRecording,hold:1.5),.init(gesture:.thumbsUp,action:.toggleHand,hold:1.3)] }
     public static func validationError(_ mappings: [GestureMapping]) -> String? {
         guard Set(mappings.map(\.id)).count == mappings.count else { return "Duplicate mapping identifiers" }
         guard mappings.allSatisfy({ $0.hold.isFinite && (0.5...3).contains($0.hold) }) else { return "Hold duration must be 0.5–3 seconds" }
@@ -139,4 +140,15 @@ public struct GestureSmoother {
 public enum GestureRegion {
     /// Normalised Vision coordinates: origin is bottom left.
     public static func contains(wrist: HandPoint) -> Bool { wrist.y >= 0.20 }
+}
+
+/// Zoom's own English meeting menu describes the action available next.
+public enum ZoomHandControl {
+    public static func state(menuTitle: String) -> Bool? {
+        switch menuTitle.trimmingCharacters(in:.whitespacesAndNewlines).lowercased() {
+        case "raise hand", "raise my hand": return false
+        case "lower hand", "lower my hand": return true
+        default: return nil
+        }
+    }
 }

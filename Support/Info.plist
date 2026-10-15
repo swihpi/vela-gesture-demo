@@ -7,10 +7,10 @@
 <key>CFBundleIconFile</key><string>Vela</string>
 <key>CFBundleDisplayName</key><string>Vela</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.3.1</string>
-<key>CFBundleVersion</key><string>5</string>
+<key>CFBundleShortVersionString</key><string>0.4.0</string>
+<key>CFBundleVersion</key><string>6</string>
 <key>LSMinimumSystemVersion</key><string>14.0</string>
 <key>NSPrincipalClass</key><string>NSApplication</string>
 <key>LSUIElement</key><false/>
-<key>NSCameraUsageDescription</key><string>Vela uses your built-in camera to recognise your configured hand gestures and operate Zoom video and microphone controls. Frames are processed locally and never recorded.</string>
+<key>NSCameraUsageDescription</key><string>Vela uses your built-in camera to recognise your configured hand gestures and operate your configured Zoom controls. Frames are processed locally and never recorded.</string>
 </dict></plist>

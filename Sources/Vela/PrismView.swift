@@ -78,7 +78,7 @@ struct PrismView: View {
                         VStack(spacing:0) {
                             HStack(spacing:10) {
                                 Text(mapping.gesture.glyph).font(.system(size:27)).foregroundStyle(mapping.enabled ? .blue : .gray).frame(width:34)
-                                Button { draft=mapping; model.editing=true; model.sync() } label: { VStack(alignment:.leading,spacing:3) { Text(mapping.gesture.title).font(.system(size:13,weight:.semibold)); Text(mapping.action.title).font(.system(size:11)).foregroundStyle(.secondary); Text(String(format:"Hold %.1fs",mapping.hold)).font(.system(size:10)).foregroundStyle(.tertiary) }.frame(maxWidth:.infinity,alignment:.leading).contentShape(Rectangle()) }.buttonStyle(.plain).accessibilityLabel("Edit \(mapping.gesture.title) mapping")
+                                Button { draft=mapping; model.editing=true; model.sync() } label: { VStack(alignment:.leading,spacing:3) { Text(mapping.gesture.title).font(.system(size:13,weight:.semibold)); Text(mapping.action.title).font(.system(size:11)).foregroundStyle(.secondary); Text(String(format:"Hold %.1fs",mapping.hold)).font(.system(size:10)).foregroundStyle(.tertiary) }.frame(maxWidth:.infinity,alignment:.leading).contentShape(Rectangle()) }.buttonStyle(.plain).accessibilityLabel("Edit \(mapping.gesture.title) mapping").accessibilityValue(mapping.action.title)
                                 Toggle("Enable \(mapping.gesture.title)",isOn:Binding(get:{ mapping.enabled },set:{ value in var item=mapping; item.enabled=value; _=store.save(item) })).labelsHidden().toggleStyle(.switch).controlSize(.small)
                                 Menu { Button("Practice gesture") { model.beginPractice(mapping) }; Button("Edit mapping") { draft=mapping; model.editing=true; model.sync() }; Button("Delete mapping",role:.destructive) { store.remove(mapping) } } label: { Image(systemName:"ellipsis") }.menuStyle(.borderlessButton).frame(width:20).accessibilityLabel("Options for \(mapping.gesture.title)")
                             }.padding(.vertical,12)
@@ -115,9 +115,10 @@ struct PrismView: View {
             HStack { Button("Camera Settings") { openSettings("Privacy_Camera") }; Button("Accessibility") { zoom.requestAccess(); openSettings("Privacy_Accessibility") } }.controlSize(.small)
             Text("Video: \(zoom.videoState.map { $0 ? "on" : "off" } ?? "unavailable") · Mic: \(zoom.microphoneState.map { $0 ? "unmuted" : "muted" } ?? "unavailable")").font(.system(size:11)).foregroundStyle(.secondary)
             Text("Computer recording: \(zoom.recordingState.map { $0 ? "active" : "stopped" } ?? "unavailable")").font(.system(size:11)).foregroundStyle(.secondary)
+            Text("Raised hand: \(zoom.handState.map { $0 ? "raised" : "lowered" } ?? "unavailable")").font(.system(size:11)).foregroundStyle(.secondary)
             Toggle("Keep Vela above other windows",isOn:$pin).onChange(of:pin) { _,value in onPin(value) }
             Toggle("Allow unverified toggle shortcuts",isOn:$zoom.shortcutFallback)
-            Text("Shortcut fallback applies only to toggle actions. Explicit mute, unmute, video on and video off require a readable Zoom control.").font(.system(size:11)).foregroundStyle(.secondary)
+            Text("Shortcut fallback applies only to video and microphone toggles. Explicit mute, unmute, video on and video off require a readable Zoom control.").font(.system(size:11)).foregroundStyle(.secondary)
             Text(model.hotkeyAvailable ? "Pause instantly: ⌃⌥⌘G" : "Pause shortcut unavailable; use Pause below").font(.system(size:12,weight:.medium))
             Text("All camera frames stay on this Mac. Vela saves no camera frames. Meeting recordings are made by Zoom.").font(.system(size:11)).foregroundStyle(.secondary)
             Button("Restore default mappings…") { restoreConfirmation=true }.controlSize(.small)

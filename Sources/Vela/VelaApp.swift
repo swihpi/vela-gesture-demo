@@ -37,7 +37,20 @@ import GestureCore
         },1,&spec,nil,&handler)
         let id=EventHotKeyID(signature:0x56454C41,id:1)
         model.hotkeyAvailable=RegisterEventHotKey(UInt32(kVK_ANSI_G),UInt32(controlKey | optionKey | cmdKey),id,GetApplicationEventTarget(),0,&hotkey)==noErr
-        model.zoom.refresh(); model.camera.start()
+        model.zoom.refresh()
+        #if DEBUG
+        if !ProcessInfo.processInfo.arguments.contains("--documentation-snapshot") { model.camera.start() }
+        #else
+        model.camera.start()
+        #endif
+        #if DEBUG
+        // Explicit local integration check; absent from the public release build.
+        if ProcessInfo.processInfo.arguments.contains("--check-zoom-hand") {
+            DispatchQueue.main.asyncAfter(deadline:.now()+1) { [weak self] in
+                self?.model.zoom.perform(.toggleHand)
+            }
+        }
+        #endif
     }
     @objc func sleeping() { model.pause(); model.camera.stop() }
     @objc func waking() { model.camera.start() }

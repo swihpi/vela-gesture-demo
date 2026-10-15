@@ -48,6 +48,19 @@ import Combine
         }
         mappings=revised; error=nil; persist()
     }
+    /// Upgrade only the old default actions; preserve edits, disabled rows, IDs and holds.
+    public func migrateDistinctTogglePreset() {
+        guard !defaults.bool(forKey:"distinctTogglePreset.v3"), error == nil else { return }
+        for index in mappings.indices {
+            if mappings[index].gesture == .openPalm && mappings[index].action == .toggleVideo {
+                mappings[index].action = .toggleMicrophone
+            } else if mappings[index].gesture == .thumbsUp && mappings[index].action == .toggleMicrophone {
+                mappings[index].action = .toggleHand
+            }
+        }
+        persist()
+        defaults.set(true,forKey:"distinctTogglePreset.v3")
+    }
     public func restoreDefaults() { mappings=GestureMapping.defaults; deleted=nil; error=nil; persist() }
     private func persist() {
         do { defaults.set(try JSONEncoder().encode(mappings),forKey:key) }

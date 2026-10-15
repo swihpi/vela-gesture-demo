@@ -42,4 +42,4 @@ The script stages and verifies the new bundle, stops the old process before repl
 
 ## Release acceptance still worth doing
 
-Test the actual downloaded DMG in a fresh user account or on another Mac: Gatekeeper, Camera and Accessibility setup, both cameras active, all video/audio toggles, recording start/stop with and without permission, red-button quit and subsequent relaunch. Do not mark those checks passed from a successful build alone.
+Test the actual downloaded DMG in a fresh user account or on another Mac: Gatekeeper, Camera and Accessibility setup, both cameras active, all video/audio toggles, thumbs-up raise/lower hand, recording start/stop with and without permission, red-button quit and subsequent relaunch. Do not mark those checks passed from a successful build alone.
