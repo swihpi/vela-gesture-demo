@@ -1,0 +1,17 @@
+.build/
+.swiftpm/
+work/
+outputs/
+.codex/
+.DS_Store
+.vela-signing-identity
+.env
+.env.*
+*.p12
+*.pfx
+*.pem
+*.key
+*.mobileprovision
+*.provisionprofile
+*.xcuserstate
+xcuserdata/
