@@ -2,6 +2,12 @@
 
 Experimental preview for Apple silicon (M-series) Macs. The deployment target is macOS 14 or later; development testing was performed on macOS 26.6.2. Older supported targets and other Mac models have not yet been independently verified.
 
+## Camera requirements
+
+The tested setup uses **two cameras**: the **MacBook Air built-in camera for gesture recognition** and a **separate stand-alone Logitech webcam for Zoom video**. The external webcam does not specifically need to be Logitech.
+
+A single-camera setup **might work or might not**. Simultaneous camera sharing between Vela and Zoom has not been verified and is not guaranteed; it may depend on macOS, the camera/driver and the applications involved. This release automatically selects a built-in camera, so external-only setups without one are not currently supported.
+
 ## Download and install
 
 1. Download the DMG from [the official GitHub Releases page](https://github.com/swihpi/vela-gesture-demo/releases).

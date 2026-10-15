@@ -12,6 +12,15 @@ The result is **Vela**, a native macOS experiment built with Codex. It combines 
 
 **Apple silicon · macOS 14+ deployment target · Not Developer ID signed or Apple-notarised**
 
+
+## Camera setup: tested with two cameras
+
+I developed and tested Vela using **the MacBook Air's built-in camera for gesture recognition** and **a separate, stand-alone Logitech webcam as Zoom's camera**. Logitech is not a specific requirement; it is the external webcam used in this experiment.
+
+**A single-camera setup might work, or it might not.** We have not verified Vela and Zoom using the same physical camera simultaneously. Camera sharing can depend on macOS, the camera/driver and the applications involved, so single-camera operation is not guaranteed.
+
+This version automatically selects a built-in camera and has no camera picker. An external-only setup without a built-in camera is not currently supported. For the tested arrangement, use the built-in camera for Vela and select a separate webcam in Zoom.
+
 ## What Swift and Apple provide—and what I built around them
 
 Swift is the language; **Vision** is the Apple framework doing the hand-pose estimation. This is not a gesture-recognition feature supplied by the Swift language itself.
